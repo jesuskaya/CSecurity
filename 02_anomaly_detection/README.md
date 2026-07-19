@@ -16,6 +16,12 @@ Run with a real CSV export:
 ..\.venv\Scripts\python.exe anomaly_det.py --input traffic.csv --output anomalies.csv
 ```
 
+Run with a CIC-IDS2017 CSV export:
+
+```powershell
+..\.venv\Scripts\python.exe anomaly_det.py --input "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv" --output cic_anomalies.csv
+```
+
 From the repository root:
 
 ```powershell
@@ -34,6 +40,17 @@ Optional columns:
 
 ```text
 packets, src_port, dst_port, protocol
+```
+
+CIC-IDS2017 columns are mapped automatically:
+
+```text
+Flow Duration -> duration
+Total Length of Fwd Packets -> src_bytes
+Total Length of Bwd Packets -> dst_bytes
+Total Fwd Packets + Total Backward Packets -> packets
+Destination Port -> dst_port
+Protocol -> protocol
 ```
 
 The script also creates derived features internally:

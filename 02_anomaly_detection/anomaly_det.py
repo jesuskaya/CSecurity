@@ -10,6 +10,15 @@ from sklearn.preprocessing import OneHotEncoder
 DEFAULT_FEATURES = ["duration", "src_bytes", "dst_bytes"]
 OPTIONAL_NUMERIC_FEATURES = ["packets", "src_port", "dst_port"]
 OPTIONAL_CATEGORICAL_FEATURES = ["protocol"]
+CIC_IDS_COLUMN_MAP = {
+    "Flow Duration": "duration",
+    "Total Length of Fwd Packets": "src_bytes",
+    "Total Length of Bwd Packets": "dst_bytes",
+    "Total Fwd Packets": "fwd_packets",
+    "Total Backward Packets": "bwd_packets",
+    "Destination Port": "dst_port",
+    "Protocol": "protocol",
+}
 
 
 def build_demo_traffic() -> pd.DataFrame:
@@ -40,7 +49,19 @@ def load_traffic(input_path: str | None) -> pd.DataFrame:
     if input_path is None:
         return build_demo_traffic()
 
-    return pd.read_csv(input_path)
+    df = pd.read_csv(input_path)
+    return normalize_columns(df)
+
+
+def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    normalized = df.copy()
+    normalized.columns = normalized.columns.str.strip()
+    normalized = normalized.rename(columns=CIC_IDS_COLUMN_MAP)
+
+    if {"fwd_packets", "bwd_packets"}.issubset(normalized.columns) and "packets" not in normalized.columns:
+        normalized["packets"] = normalized["fwd_packets"] + normalized["bwd_packets"]
+
+    return normalized
 
 
 def add_derived_features(df: pd.DataFrame) -> pd.DataFrame:
