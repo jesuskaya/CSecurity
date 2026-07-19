@@ -21,16 +21,22 @@ Run detection on a real CSV export:
 .\.venv\Scripts\python.exe 02_anomaly_detection/anomaly_det.py --input traffic.csv --output anomalies.csv
 ```
 
+Run detection on CIC-IDS2017 DDoS traffic:
+
+```powershell
+.\.venv\Scripts\python.exe 02_anomaly_detection/anomaly_det.py --input "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv" --output anomalies.csv
+```
+
 Required CSV columns:
 
 ```text
-duration, src_bytes, dst_bytes
+Flow Duration, Total Length of Fwd Packets, Total Length of Bwd Packets
 ```
 
 Optional columns used when present:
 
 ```text
-packets, src_port, dst_port, protocol
+Destination Port, Protocol, Total Fwd Packets, Total Backward Packets, Flow Bytes/s, Flow Packets/s, Average Packet Size, Label
 ```
 
-The script saves suspicious rows to `anomalies.csv` and adds `anomaly` plus `anomaly_score` columns.
+The script saves suspicious rows to `anomalies.csv`, keeps `Label` when present, and adds `anomaly` plus `anomaly_score` columns.

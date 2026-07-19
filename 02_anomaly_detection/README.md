@@ -10,16 +10,16 @@ Run with demo data:
 ..\.venv\Scripts\python.exe anomaly_det.py --output anomalies.csv
 ```
 
-Run with a real CSV export:
-
-```powershell
-..\.venv\Scripts\python.exe anomaly_det.py --input traffic.csv --output anomalies.csv
-```
-
 Run with a CIC-IDS2017 CSV export:
 
 ```powershell
 ..\.venv\Scripts\python.exe anomaly_det.py --input "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv" --output cic_anomalies.csv
+```
+
+Run the included small CIC-like sample:
+
+```powershell
+..\.venv\Scripts\python.exe anomaly_det.py --input data\cic_ids_sample.csv --output cic_anomalies.csv --contamination 0.2
 ```
 
 From the repository root:
@@ -33,30 +33,25 @@ From the repository root:
 Required columns:
 
 ```text
-duration, src_bytes, dst_bytes
+Flow Duration, Total Length of Fwd Packets, Total Length of Bwd Packets
 ```
 
 Optional columns:
 
 ```text
-packets, src_port, dst_port, protocol
+Destination Port, Protocol, Total Fwd Packets, Total Backward Packets, Flow Bytes/s, Flow Packets/s, Average Packet Size
 ```
 
-CIC-IDS2017 columns are mapped automatically:
+The `Label` column is not used for training, but it is kept in output and used for evaluation when present.
+
+The script prints:
 
 ```text
-Flow Duration -> duration
-Total Length of Fwd Packets -> src_bytes
-Total Length of Bwd Packets -> dst_bytes
-Total Fwd Packets + Total Backward Packets -> packets
-Destination Port -> dst_port
-Protocol -> protocol
-```
-
-The script also creates derived features internally:
-
-```text
-total_bytes, bytes_per_second, avg_packet_size
+Label distribution among anomalies
+Total attacks
+Attacks detected as anomalies
+BENIGN false positives
+Attack recall
 ```
 
 ## Output
