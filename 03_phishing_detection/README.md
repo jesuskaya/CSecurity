@@ -4,28 +4,35 @@ Automation project for identifying suspicious URLs, domains, and email indicator
 
 ## Goal
 
-Build a tool that can analyze phishing indicators and flag risky items for review.
+Train a text classifier that detects phishing email content and prints model quality plus a sample phishing probability.
 
-## Planned Inputs
+## Usage
 
-```text
-url, domain, sender_email, subject, body_preview
+From the repository root:
+
+```powershell
+python 03_phishing_detection/antiphishing.py
 ```
 
-## Planned Checks
-
-- suspicious URL length
-- IP address used instead of a domain
-- unusual top-level domain
-- excessive subdomains
-- suspicious keywords
-- domain age or reputation enrichment
-- mismatch between sender and link domain
-
-## Planned Output
+## Input
 
 ```text
-indicator, risk_score, reasons
+phishing_emails_dataset.csv
+```
+
+Required columns:
+
+```text
+text, label
+```
+
+## Output
+
+```text
+classification report
+top phishing words
+top legitimate words
+sample phishing probability
 ```
 
 ## Structure
