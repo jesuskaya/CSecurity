@@ -6,7 +6,7 @@ Repository for small cybersecurity automation practice projects.
 
 - `01_mini_log_analyzer/` - Mini Log Analyzer for basic log triage and optional VirusTotal enrichment.
 - `02_anomaly_detection/` - Network traffic anomaly detection with Python, Pandas, and Scikit-learn.
-- `03_phishing_detection/` - Planned phishing detection automation for suspicious URLs, domains, and email indicators.
+- `03_phishing_detection/` - Phishing email detection CLI with train, single-email predict, and batch scan modes.
 
 ## Network Traffic Anomaly Detection
 

@@ -1,42 +1,78 @@
 # Phishing Detection Automation
 
-Automation project for identifying suspicious URLs, domains, and email indicators.
+Train and run a phishing email detector for SOC triage.
 
-## Goal
+## Dataset
 
-Train a text classifier that detects phishing email content and prints model quality plus a sample phishing probability.
-
-## Usage
-
-From the repository root:
-
-```powershell
-python 03_phishing_detection/antiphishing.py
-```
-
-## Input
-
-```text
-phishing_emails_dataset.csv
-```
-
-Required columns:
+The training CSV must contain:
 
 ```text
 text, label
 ```
 
-## Output
+`label` values:
 
 ```text
-classification report
-top phishing words
-top legitimate words
-sample phishing probability
+0 = legitimate
+1 = phishing
 ```
 
-## Structure
+## Train
 
-- `data/` - local samples and test CSV files
-- `src/` - phishing detection source code
-- `requirements.txt` - Python dependencies
+```powershell
+python 03_phishing_detection/antiphishing.py train
+```
+
+This saves:
+
+```text
+03_phishing_detection/model/phishing_model.pkl
+03_phishing_detection/model/tfidf_vectorizer.pkl
+```
+
+## Predict One Email
+
+```powershell
+python 03_phishing_detection/antiphishing.py predict --text "Your mailbox is full. Verify your account now."
+```
+
+Or from a text file:
+
+```powershell
+python 03_phishing_detection/antiphishing.py predict --file suspicious_email.txt
+```
+
+Included sample:
+
+```powershell
+python 03_phishing_detection/antiphishing.py predict --file 03_phishing_detection/data/suspicious_email.txt
+```
+
+## Batch Scan
+
+Input CSV must contain a `text` column.
+
+```powershell
+python 03_phishing_detection/antiphishing.py batch --input emails.csv --output phishing_results.csv
+```
+
+Included sample:
+
+```powershell
+python 03_phishing_detection/antiphishing.py batch --input 03_phishing_detection/data/sample_emails.csv --output phishing_results.csv
+```
+
+## Output
+
+The detector returns:
+
+```text
+phishing_probability
+prediction
+risk_level
+top_suspicious_terms
+```
+
+## Notes
+
+This is a triage tool, not a final verdict. High scores should be reviewed with email headers, sender reputation, URLs, attachments, and user context.
